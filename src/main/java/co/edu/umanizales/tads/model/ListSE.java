@@ -22,14 +22,19 @@ public class ListSE {
         metemos el niño en el costal y ese costal es la cabeza
      */
     public void add(Kid kid){
+        //en esta parte se pregunta si la cabeza está vacia
         if(head != null){
+            //se crea un nodo que se pare en la cabeza (ayudante)
             Node temp = head;
+            //Se crea un ciclo que dice que el ayudante va a recorrer la lista hasta que no haya nada
             while(temp.getNext() !=null)
             {
+                //El mensajero se pasa por cada costal hasta que no encuentre nada
                 temp = temp.getNext();
             }
-            /// Parado en el último
+            /// Se crea un nuevo costal con el niño
             Node newNode = new Node(kid);
+            //Donde estaba parado el ayudante, queda como el nuevo nodo que será el niño
             temp.setNext(newNode);
         }
         else {
@@ -94,6 +99,7 @@ public class ListSE {
              }
          }
     }
+
 
     public void move(int actualPlace, int finalPlace) {
         Node prev = null;
@@ -195,6 +201,20 @@ public class ListSE {
             }
         }
         return true;
+    }
+
+    public int getCountKidsByCityByGenderByAge (String code, char gender, byte age){
+        int count =0;
+        if( this.head!=null){
+            Node temp = this.head;
+            while(temp != null){
+                if(temp.getData().getLocation().getCode().equals(code) && temp.getData().getGender()==gender && temp.getData().getAge() > age){
+                    count++;
+                }
+                temp = temp.getNext();
+            }
+        }
+        return count;
     }
 
 }

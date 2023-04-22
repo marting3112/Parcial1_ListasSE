@@ -1,8 +1,6 @@
 package co.edu.umanizales.tads.controller;
 
-import co.edu.umanizales.tads.controller.dto.KidDTO;
-import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
-import co.edu.umanizales.tads.controller.dto.ResponseDTO;
+import co.edu.umanizales.tads.controller.dto.*;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.service.ListSEService;
@@ -52,12 +50,15 @@ public class ListSEController {
 
 
     @GetMapping(path = "/movekid/{initialplace}/{finalplace}")
-    public ResponseEntity<ResponseDTO> move(@PathVariable ("initialplace")int initialplace,@PathVariable("finalplace")int finalplace) {
+    public ResponseEntity<ResponseDTO> move(@PathVariable ("initialplace")int initialplace,
+                                            @PathVariable("finalplace")int finalplace) {
         if (initialplace < 1 || finalplace > listSEService.getKids().size()) {
-            return new ResponseEntity<>(new ResponseDTO(400, "Los lugares no son válidos", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseDTO(400, "Los lugares no son válidos", null),
+                    HttpStatus.BAD_REQUEST);
         } else {
             listSEService.getKids().move(initialplace, finalplace);
-            return new ResponseEntity<>(new ResponseDTO(200, "niño movido con éxito", null), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO(200, "niño movido con éxito", null),
+                    HttpStatus.OK);
         }
     }
 
@@ -114,6 +115,34 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
+    @GetMapping(path="/infokids/{age}")
+    public ResponseEntity<ResponseDTO> infokids(@PathVariable byte age){
+        List<KidsByCityByGenderDTO> KidsByCityByGenderDTOList = new ArrayList<>();
+        for(Location loc: locationService.getLocations()){
+            if(loc.getCode().length() == 8){
+                String nameCity = loc.getName();
+                List<GendersDTO> GendersDTOList = new ArrayList<>();
+
+                GendersDTOList.add(new GendersDTO('m', listSEService.getKids().getCountKidsByCityByGenderByAge
+                        (loc.getCode(),'m',age)));
+
+                GendersDTOList.add(new GendersDTO('f', listSEService.getKids().getCountKidsByCityByGenderByAge
+                        (loc.getCode(),'f',age)));
+
+                // esta operación se usa para sumar un atributo de un objeto dentro de una lista
+               int total = GendersDTOList.get(0).getQuantity() + GendersDTOList.get(1).getQuantity();
+
+            KidsByCityByGenderDTOList.add(new KidsByCityByGenderDTO(nameCity,GendersDTOList,total));
+
+            }
+        }
+        return new ResponseEntity<>(new ResponseDTO(
+                200,KidsByCityByGenderDTOList,
+                null), HttpStatus.OK);
+    }
 
 
-}
+
+
+
+    }
