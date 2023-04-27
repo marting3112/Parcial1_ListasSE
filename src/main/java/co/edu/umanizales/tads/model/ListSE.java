@@ -91,8 +91,9 @@ public class ListSE {
          while (temp != null){
              if (temp.getData().getAge() != age){
                  listcopy.addToStart(temp.getData());
-                 temp.getNext();
+
              }
+             temp = temp.getNext();
          }
          this.head = listcopy.getHead();
     }
@@ -333,5 +334,9 @@ public class ListSE {
         }
         this.head = sendFinish.getHead();
     }
+
+    //El niño adelante posiciones
+
+
 
 }
