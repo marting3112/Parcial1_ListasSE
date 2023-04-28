@@ -205,7 +205,7 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/advanceposition/{code}/{numposition}")
+    @GetMapping(path = "/loseposition/{code}/{numposition}")
     public ResponseEntity<ResponseDTO> backPosition(@PathVariable String code, @PathVariable int numposition){
 
         listSEService.getKids().backPosition(code,numposition,listSEService.getKids());
