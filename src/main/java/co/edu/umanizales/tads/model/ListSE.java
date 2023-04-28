@@ -98,41 +98,6 @@ public class ListSE {
          this.head = listcopy.getHead();
     }
 
-    //El niño adelanta posiciones
-
-    public void advanceKid (String id, int newPosition ){
-        if(head==null || head.getNext() ==null){
-            return;
-        }
-
-        Node current = head;
-        Node previous = null;
-        Node KidNode = null;
-
-        //Buscamos al niño por su id
-        while (current != null && current.getData().getIdentification() != id){
-            previous = current;
-            current = current.getNext();
-        }
-
-        if (current != null){
-            KidNode = current;
-            Kid kid = KidNode.getData();
-
-            //Eliminamos al niño de su posición actual
-            if(previous == null){
-                head = current.getNext();
-            }else{
-                previous.setNext(current.getNext());
-            }
-
-            //Añadimos el nodo del niño a su nueva posición
-            addByPosition(kid, newPosition);
-        }
-    }
-
-
-
     public void addByPosition(Kid kid, int position){
         Node nuevoNodo = new Node(kid);
         if (position == 0){
@@ -336,6 +301,38 @@ public class ListSE {
     }
 
     //El niño adelante posiciones
+    public void gainPosition(String id, int position, ListSE listSE){
+        if (head != null){
+            Node temp = this.head;
+            int count = 1;
+
+            while (temp != null && ! temp.getData().getIdentification().equals(id)){
+                temp = temp.getNext();
+                count ++;
+            }
+            int newPosition = position-count;
+            Kid listCopy = temp.getData();
+            listSE.deleteByidentification(temp.getData().getIdentification());
+            listSE.addByPosition(listCopy , newPosition);
+        }
+    }
+
+    //El niño pierda posiciones
+    public void backPosition(String id, int position, ListSE listSE){
+        if (head != null){
+            Node temp = this.head;
+            int count = 1;
+
+            while (temp != null && ! temp.getData().getIdentification().equals(id)){
+                temp = temp.getNext();
+                count ++;
+            }
+            int newPosition = position+count-1;
+            Kid listCopy = temp.getData();
+            listSE.deleteByidentification(temp.getData().getIdentification());
+            listSE.addByPosition(listCopy , newPosition);
+        }
+    }
 
 
 

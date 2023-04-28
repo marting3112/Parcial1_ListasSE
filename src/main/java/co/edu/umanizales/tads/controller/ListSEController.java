@@ -56,16 +56,6 @@ public class ListSEController {
     }
 
 
-    @GetMapping(path = "/movekid/{id}/{newposition}")
-    public ResponseEntity<ResponseDTO> advanceKid(@PathVariable("id")String id, @PathVariable
-            ("newposition")int newposition) {
-
-            listSEService.getKids().advanceKid(id, newposition);
-            return new ResponseEntity<>(new ResponseDTO(200, "niño movido con éxito", null),
-                    HttpStatus.OK);
-
-    }
-
     @PostMapping
     public ResponseEntity<ResponseDTO> addKid(@RequestBody KidDTO kidDTO) {
         Location location = locationService.getLocationByCode(kidDTO.getCodeLocation());
@@ -203,6 +193,24 @@ public class ListSEController {
         listSEService.getKids().kidToFinishByLetter(Character.toUpperCase(first));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"los niños se han enviado al final",
+                null), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/advanceposition/{code}/{numposition}")
+    public ResponseEntity<ResponseDTO> gainPosition(@PathVariable String code, @PathVariable int numposition){
+
+        listSEService.getKids().gainPosition(code,numposition,listSEService.getKids());
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"El niño se ha movido con éxito",
+                null), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/advanceposition/{code}/{numposition}")
+    public ResponseEntity<ResponseDTO> backPosition(@PathVariable String code, @PathVariable int numposition){
+
+        listSEService.getKids().backPosition(code,numposition,listSEService.getKids());
+        return new ResponseEntity<>(new ResponseDTO(
+                200,"El niño se ha movido con éxito",
                 null), HttpStatus.OK);
     }
 
