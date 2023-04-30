@@ -138,6 +138,7 @@ public class ListSE {
         return count;
     }
 
+    //Reporte de niños por departamento
     public int getCountKidsByDeptoCode(String code){
         int count =0;
         if( this.head!=null){

@@ -11,4 +11,6 @@ public class Pet {
     private byte agePet;
     private char gender;
     private String breed;
+    private Location location;
+
 }
