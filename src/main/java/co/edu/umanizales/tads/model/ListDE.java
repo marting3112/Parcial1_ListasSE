@@ -110,7 +110,7 @@ public class ListDE {
         }
     }
 
-    //Agregar niños al inicio y niñas al final
+    //Agregar mascotas m al inicio y f al final
     public void addBoyStart(){
         if(head == null){
             return;
@@ -242,7 +242,7 @@ public class ListDE {
     }
 
     //Que la mascota adelante posiciones
-    public void gainPosition(String id, int position, ListDE list){
+    public void gainPosition(String id, int position){
         if (head != null){
             NodeDE temp = head;
             int count =1;
@@ -251,16 +251,20 @@ public class ListDE {
                 count ++;
             }
             if (temp != null){
-                int newPosition = position - count;
+                int newPosition = count - position;
                 Pet listCopy = temp.getData();
-                list.deleteById(listCopy.getOwnerIdentification());
-                list.addByPosition(listCopy, newPosition);
+                deleteById(temp.getData().getOwnerIdentification());
+                if (newPosition > 0 ){
+                    addByPosition(listCopy,newPosition);
+                }else{
+                    addToStart(listCopy);
+                }
             }
         }
     }
 
     //Que el niño pierda posiciones
-    public void backPosition(String id, int position, ListDE list){
+    public void backPosition(String id, int position){
         if (head != null){
             NodeDE temp = head;
             int count =1;
@@ -268,11 +272,11 @@ public class ListDE {
                 temp = temp.getNext();
                 count ++;
             }
+            int sum = position + count;
             if (temp != null){
-                int newPosition = position + count - 1;
                 Pet listCopy = temp.getData();
-                list.deleteById(listCopy.getOwnerIdentification());
-                list.addByPosition(listCopy, newPosition);
+                deleteById(temp.getData().getOwnerIdentification());
+                addByPosition(listCopy,sum);
             }
         }
     }
