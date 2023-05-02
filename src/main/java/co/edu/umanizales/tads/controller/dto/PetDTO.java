@@ -10,6 +10,9 @@ public class PetDTO {
     private byte agePet;
     private String petType;
     private String breed;
+    private String codeLocation;
+    private char gender;
+
 
 
 }

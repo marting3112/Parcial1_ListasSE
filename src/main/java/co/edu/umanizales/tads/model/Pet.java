@@ -9,8 +9,9 @@ public class Pet {
     private String ownerIdentification;
     private String namePet;
     private byte agePet;
-    private char gender;
+    private String petType;
     private String breed;
     private Location location;
+    private char gender;
 
 }

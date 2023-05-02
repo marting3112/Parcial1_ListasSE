@@ -44,7 +44,7 @@ public class ListDE {
 
 
     public void addToStart(Pet pet){
-        int size = 0;
+
         NodeDE newNode = new NodeDE(pet);
         if(head !=null)
         {
@@ -98,78 +98,67 @@ public class ListDE {
 
     //Invertir la lista
     public void invert(){
-        if (head != null){
+        if (this.head != null){
             ListDE listcopy = new ListDE();
-            NodeDE temp = tail;
+            NodeDE temp = this.head;
             while (temp != null){
-                listcopy.addPet(temp.getData());
-                temp = temp.getPrev();
+                listcopy.addToStart(temp.getData());
+                temp = temp.getNext();
             }
-            head = listcopy.getHead();
-            tail = listcopy.getTail();
+            this.head = listcopy.getHead();
+
         }
     }
 
     //Agregar mascotas m al inicio y f al final
     public void addBoyStart(){
-        if(head == null){
-            return;
-        }
-        ListDE boysList = new ListDE();
-        ListDE girlsList = new ListDE();
-
-        NodeDE temp = head;
-        while (temp != null){
-            if (temp.getData().getGender()=='m'){
-                boysList.addPet(temp.getData());
-            }else{
-                girlsList.addPet(temp.getData());
+        if (head != null){
+            ListDE listCopy = new ListDE();
+            NodeDE temp = head;
+            while (temp != null){
+                if (temp.getData().getGender() == 'm'){
+                    listCopy.addToStart(temp.getData());
+                }else{
+                    listCopy.addPet(temp.getData());
+                }
+                temp = temp.getNext();
             }
-            temp = temp.getNext();
-        }
-        head = null;
-        NodeDE boyNode = boysList.getTail();
-        while (boyNode != null){
-            addToStart(boyNode.getData());
-            boyNode = boyNode.getPrev();
-        }
-        NodeDE girlNode = girlsList.getTail();
-        while (girlNode != null){
-            addToStart(girlNode.getData());
-            girlNode = girlNode.getPrev();
-
+            head = listCopy.getHead();
         }
     }
+
 
     //Intercalar niño - niña
     public void raffleBoyGirl(){
-        ListDE listM = new ListDE();
-        ListDE listF = new ListDE();
-        NodeDE temp = head;
+        ListDE listMale = new ListDE();
+        ListDE listFemale = new ListDE();
+        NodeDE temp = this.head;
         while (temp != null){
-            if (temp.getData().getGender() == 'm'){
-                listM.addPet(temp.getData());
+            if(temp.getData().getGender()=='m'){
+                listMale.addPet(temp.getData());
             }
-            if (temp.getData().getGender() == 'f'){
-                listM.addPet(temp.getData());
+            if(temp.getData().getGender()=='f'){
+                listFemale.addPet(temp.getData());
             }
             temp = temp.getNext();
         }
-        ListDE aleatList = new ListDE();
-        NodeDE mNode = listM.getHead();
-        NodeDE fNode = listF.getHead();
-        while (mNode != null || fNode != null){
-            if (mNode != null){
-                aleatList.addPet(mNode.getData());
-                mNode = mNode.getNext();
+
+        ListDE sortedList = new ListDE();
+        NodeDE maleNode = listMale.getHead();
+        NodeDE femaleNode = listFemale.getHead();
+        while (maleNode != null || femaleNode != null){
+            if (maleNode != null){
+                sortedList.addPet(maleNode.getData());
+                maleNode = maleNode.getNext();
             }
-            if (fNode != null){
-                aleatList.addPet(fNode.getData());
-                fNode = fNode.getNext();
+            if (femaleNode != null){
+                sortedList.addPet(femaleNode.getData());
+                femaleNode = femaleNode.getNext();
             }
         }
-        this.head = aleatList.getHead();
+        this.head = sortedList.getHead();
     }
+
 
     //Obtener promedio de edad
     public float averageAge(){
@@ -296,24 +285,21 @@ public class ListDE {
 
     //Enviar al final los niños que su nombre inicie por la letra dada
     public void petToFinishByLetter (char first){
-        ListDE sendFinish = new ListDE();
-        NodeDE temp = head;
-
-        while (temp != null){
-            if (temp.getData().getNamePet().charAt(0) != Character.toUpperCase(first)){
-                sendFinish.addPet(temp.getData());
+        if (this.head != null){
+            ListDE listCopy = new ListDE();
+            NodeDE temp = this.head;
+            char firstChar = Character.toUpperCase(first);
+            while (temp != null){
+                char firstLetter = temp.getData().getNamePet().charAt(0);
+                if (Character.toUpperCase(firstLetter) != firstChar){
+                    listCopy.addToStart(temp.getData());
+                }else {
+                    listCopy.addPet(temp.getData());
+                }
+                temp = temp.getNext();
             }
-            temp = temp.getNext();
+            this.head = listCopy.getHead();
         }
-        temp = this.head;
-
-        while (temp != null){
-            if (temp.getData().getNamePet().charAt(0) == Character.toUpperCase(first)){
-                sendFinish.addPet(temp.getData());
-            }
-            temp = temp.getNext();
-        }
-        this.head = sendFinish.getHead();
     }
 
     public boolean CheckPet (Pet pet){
@@ -328,7 +314,5 @@ public class ListDE {
         }
         return true;
     }
-
-
 
 }
