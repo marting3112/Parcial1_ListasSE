@@ -1,6 +1,7 @@
 package co.edu.umanizales.tads.controller;
 
 import co.edu.umanizales.tads.controller.dto.*;
+import co.edu.umanizales.tads.exception.ListSEException;
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.model.Ranges;
@@ -10,12 +11,15 @@ import co.edu.umanizales.tads.service.RangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping(path = "/listse")
 public class ListSEController {
     @Autowired
@@ -57,7 +61,7 @@ public class ListSEController {
 
 
     @PostMapping
-    public ResponseEntity<ResponseDTO> addKid(@RequestBody KidDTO kidDTO) {
+    public ResponseEntity<ResponseDTO> addKid(@RequestBody @Valid KidDTO kidDTO) {
         Location location = locationService.getLocationByCode(kidDTO.getCodeLocation());
         Boolean checkkid = listSEService.getKids().Checkkid(new Kid(kidDTO.getIdentification(), kidDTO.getName(),
                 kidDTO.getAge(), kidDTO.getGender(), location));
@@ -70,10 +74,16 @@ public class ListSEController {
                     400, "El petacón ya existe",
                     null), HttpStatus.OK);
         }else{
-            listSEService.getKids().add(
-                    new Kid(kidDTO.getIdentification(),
-                            kidDTO.getName(), kidDTO.getAge(),
-                            kidDTO.getGender(), location));
+            try {
+                listSEService.getKids().add(
+                        new Kid(kidDTO.getIdentification(),
+                                kidDTO.getName(), kidDTO.getAge(),
+                                kidDTO.getGender(), location));
+            }catch (ListSEException e){
+                return new ResponseEntity<>(new ResponseDTO(
+                        409,e.getMessage(),
+                        null), HttpStatus.OK);
+            }
             return new ResponseEntity<>(new ResponseDTO(
                     200, "Se ha adicionado el petacón",
                     null), HttpStatus.OK);
