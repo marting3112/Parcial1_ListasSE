@@ -10,18 +10,18 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 
 public class Kid {
-    @NotBlank
+    @NotNull(message = "Este campo no puede ir vacío")
     private String identification;
-    @NotBlank
+    @NotNull(message = "Este campo no puede ir vacío")
     @Size(min = 1, max = 30)
     private String name;
-    @NotBlank
-    @DecimalMin(value = "0",message = "La edad debe ser mayor a 0 años")
-    @DecimalMax(value = "15", message = "La edad debe ser menor a 15 años")
+    @NotNull(message = "Este campo no puede ir vacío")
+    @Min(0)
+    @Max(14)
     private byte age;
-    @NotBlank
+    @NotNull(message = "Este campo no puede ir vacío")
     @Pattern(regexp = "[fm]", message = "El género debe ser 'f' o 'm' ")
     private char gender;
-    @NotBlank
+    @NotNull(message = "Este campo no puede ir vacío")
     private Location location;
 }
