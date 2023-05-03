@@ -73,23 +73,21 @@ public class ListSEController {
             return new ResponseEntity<>(new ResponseDTO(
                     400, "El petacón ya existe",
                     null), HttpStatus.OK);
-        }else{
-            try {
-                listSEService.getKids().add(
-                        new Kid(kidDTO.getIdentification(),
-                                kidDTO.getName(), kidDTO.getAge(),
-                                kidDTO.getGender(), location));
-            }catch (ListSEException e){
-                return new ResponseEntity<>(new ResponseDTO(
-                        409,e.getMessage(),
-                        null), HttpStatus.OK);
-            }
+        } else {
+            listSEService.getKids().add(
+                    new Kid(kidDTO.getIdentification(),
+                            kidDTO.getName(), kidDTO.getAge(),
+                            kidDTO.getGender(), location));
+
             return new ResponseEntity<>(new ResponseDTO(
                     200, "Se ha adicionado el petacón",
                     null), HttpStatus.OK);
         }
 
     }
+
+
+
 
     @GetMapping(path = "/kidsbylocations")
     public ResponseEntity<ResponseDTO> getKidsByLocation(){

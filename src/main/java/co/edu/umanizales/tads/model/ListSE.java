@@ -24,7 +24,7 @@ public class ListSE {
     no
         metemos el niño en el costal y ese costal es la cabeza
      */
-    public void add(Kid kid) throws ListSEException {
+    public void add(Kid kid)  {
         //en esta parte se pregunta si la cabeza está vacia
         if(head != null){
             //se crea un nodo que se pare en la cabeza (ayudante)
@@ -33,14 +33,13 @@ public class ListSE {
             while(temp.getNext() !=null)
             {
                 if(temp.getData().getIdentification().equals(kid.getIdentification())){
-                    throw new ListSEException("Ya existe un niño");
+
                 }
 
                 //El mensajero se pasa por cada costal hasta que no encuentre nada
                 temp = temp.getNext();
             }
             if(temp.getData().getIdentification().equals(kid.getIdentification())){
-                throw new ListSEException("Ya existe un niño");
             }
             /// Se crea un nuevo costal con el niño
             Node newNode = new Node(kid);
@@ -221,7 +220,7 @@ public class ListSE {
     }
 
     //Agregar niños al inicio y niñas al final
-    public void addBoyStart() throws ListSEException{
+    public void addBoyStart() {
         ListSE listcopy = new ListSE();
         Node temp = this.head;
         while (temp != null){
@@ -319,7 +318,7 @@ public class ListSE {
                 temp = temp.getNext();
                 count ++;
             }
-            int newPosition = position-count;
+            int newPosition = count - position;
             Kid listCopy = temp.getData();
             listSE.deleteByidentification(temp.getData().getIdentification());
             listSE.addByPosition(listCopy , newPosition);
@@ -336,7 +335,7 @@ public class ListSE {
                 temp = temp.getNext();
                 count ++;
             }
-            int newPosition = position+count-1;
+            int newPosition = position+count;
             Kid listCopy = temp.getData();
             listSE.deleteByidentification(temp.getData().getIdentification());
             listSE.addByPosition(listCopy , newPosition);
