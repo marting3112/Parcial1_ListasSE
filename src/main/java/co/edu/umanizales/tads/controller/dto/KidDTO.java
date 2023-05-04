@@ -1,26 +1,22 @@
 package co.edu.umanizales.tads.controller.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import javax.validation.constraints.*;
 
 @Data
-@AllArgsConstructor
 public class KidDTO {
-        @NotNull(message = "Este campo no puede ir vacío")
+        @NotBlank(message = "Este campo no puede ir vacío")
         private String identification;
-        @NotNull(message = "Este campo no puede ir vacío")
-        @Size(min = 1, max = 30)
+        @NotBlank(message = "Este campo no puede ir vacío")
+        @Size(max = 30, message = "el nombre debe ser máximo de 30 caracteres")
         private String name;
-        @NotNull(message = "Este campo no puede ir vacío")
-        @Min(0)
-        @Max(14)
+
+        @Min(value = 1)
+        @Max(value = 14)
         private byte age;
-        @NotNull(message = "Este campo no puede ir vacío")
-        @Pattern(regexp = "[fm]", message = "El género debe ser 'f' o 'm' ")
         private char gender;
-        @NotNull(message = "Este campo no puede ir vacío")
+        @NotBlank(message = "Este campo no puede ir vacío")
         private String codeLocation;
 
 }
