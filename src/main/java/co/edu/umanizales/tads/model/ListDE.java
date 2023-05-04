@@ -13,7 +13,10 @@ public class ListDE {
     private List<Pet> pets = new ArrayList<>();
 
     //Adicionar mascota
-    public void addPet(Pet pet) {
+    public void addPet(Pet pet) throws IllegalArgumentException{
+        if (pet == null) {
+            throw new IllegalArgumentException("El objeto pet no puede ser nulo");
+        }
         int size = 0;
 
         if (head == null) {
@@ -43,52 +46,60 @@ public class ListDE {
     }
 
 
-    public void addToStart(Pet pet){
+    public void addToStart(Pet pet) throws IllegalArgumentException {
+        if (pet == null) {
+            throw new IllegalArgumentException("El objeto pet no puede ser nulo");
+        }
 
         NodeDE newNode = new NodeDE(pet);
-        if(head !=null)
-        {
+        if (head != null) {
             head.setPrev(newNode);
             newNode.setNext(head);
         }
         head = newNode;
-        size ++;
-
+        size++;
     }
 
     //Eliminar por edad
-    public void deleteByAge (Byte age){
+    public void deleteByAge(Byte age) throws IllegalArgumentException {
+        if (age == null) {
+            throw new IllegalArgumentException("La edad de la mascota no puede ser nula");
+        }
         NodeDE temp = head;
-        while (temp != null){
-            if (temp.getData().getAgePet() == age){
-            NodeDE prev = temp.getPrev();
-            NodeDE next = temp.getNext();
-            if (prev == null){
-                head = next;
-            }else{
-                prev.setNext(next);
-            }
-            if (next != null){
-                next.setPrev(prev);
-            }
+        while (temp != null) {
+            if (temp.getData().getAgePet() == age) {
+                NodeDE prev = temp.getPrev();
+                NodeDE next = temp.getNext();
+                if (prev == null) {
+                    head = next;
+                } else {
+                    prev.setNext(next);
+                }
+                if (next != null) {
+                    next.setPrev(prev);
+                }
             }
             temp = temp.getNext();
         }
     }
 
     //Eliminar por identificación
-    public void deleteById (String id){
+    public void deleteById(String id) throws IllegalArgumentException {
+        if (id == null) {
+            throw new IllegalArgumentException("El identificador del dueño no puede ser nulo");
+        }
+
         NodeDE temp = head;
-        while (temp != null){
-            if (temp.getData().getOwnerIdentification().equals(id)){
+        while (temp != null) {
+            if (temp.getData().getOwnerIdentification().equals(id)) {
                 NodeDE prev = temp.getPrev();
                 NodeDE next = temp.getNext();
-                if (prev == null){
+                if (prev == null) {
                     head = next;
-                }else{
+                } else {
                     prev.setNext(next);
                 }
-                if (next != null){
+                if (next != null) {
                     next.setPrev(prev);
                 }
             }
@@ -97,39 +108,46 @@ public class ListDE {
     }
 
     //Invertir la lista
-    public void invert(){
-        if (this.head != null){
-            ListDE listcopy = new ListDE();
-            NodeDE temp = this.head;
-            while (temp != null){
-                listcopy.addToStart(temp.getData());
-                temp = temp.getNext();
-            }
-            this.head = listcopy.getHead();
-
+    public void invert() {
+        if (this.head == null) {
+            return;
         }
+
+        ListDE listcopy = new ListDE();
+        NodeDE temp = this.head;
+        while (temp != null) {
+            listcopy.addToStart(temp.getData());
+            temp = temp.getNext();
+        }
+        this.head = listcopy.getHead();
     }
 
     //Agregar mascotas m al inicio y f al final
-    public void addBoyStart(){
-        if (head != null){
-            ListDE listCopy = new ListDE();
-            NodeDE temp = head;
-            while (temp != null){
-                if (temp.getData().getGender() == 'm'){
-                    listCopy.addToStart(temp.getData());
-                }else{
-                    listCopy.addPet(temp.getData());
-                }
-                temp = temp.getNext();
-            }
-            head = listCopy.getHead();
+    public void addBoyStart() throws IllegalStateException {
+        if (head == null) {
+            throw new IllegalStateException("La lista está vacía y no se pueden agregar elementos");
         }
+
+        ListDE listCopy = new ListDE();
+        NodeDE temp = head;
+        while (temp != null) {
+            if (temp.getData().getGender() == 'm') {
+                listCopy.addToStart(temp.getData());
+            } else {
+                listCopy.addPet(temp.getData());
+            }
+            temp = temp.getNext();
+        }
+        head = listCopy.getHead();
     }
 
 
     //Intercalar niño - niña
-    public void raffleBoyGirl(){
+    public void raffleBoyGirl() throws IllegalArgumentException {
+        if (head == null) {
+            throw new IllegalArgumentException("La lista está vacía y no se puede realizar el sorteo");
+        }
+
         ListDE listMale = new ListDE();
         ListDE listFemale = new ListDE();
         NodeDE temp = this.head;
@@ -141,6 +159,10 @@ public class ListDE {
                 listFemale.addPet(temp.getData());
             }
             temp = temp.getNext();
+        }
+
+        if (listMale.getSize() == 0 || listFemale.getSize() == 0) {
+            throw new IllegalArgumentException("No hay suficientes mascotas de ambos géneros para realizar el sorteo");
         }
 
         ListDE sortedList = new ListDE();
@@ -161,29 +183,35 @@ public class ListDE {
 
 
     //Obtener promedio de edad
-    public float averageAge(){
-        if(head != null){
+    public float averageAge() throws IllegalStateException {
+        if (head != null) {
             NodeDE temp = head;
             int count = 0;
             int ages = 0;
-            while (temp.getNext() != null){
+            while (temp.getNext() != null) {
                 count++;
-                ages = ages + temp.getData().getAgePet();
+                ages += temp.getData().getAgePet();
                 temp = temp.getNext();
             }
-            return (float) ages/count;
-        }else{
-            return (int) 0;
+            if (count == 0) {
+                throw new IllegalStateException("Cannot calculate average age of an empty list.");
+            }
+            return (float) ages / count;
+        } else {
+            throw new IllegalStateException("Cannot calculate average age of an empty list.");
         }
     }
 
     //Reporte de mascotas por ciudad
-    public int getCountPetsByLocationCode(String code){
-        int count =0;
-        if( this.head!=null){
+    public int getCountPetsByLocationCode(String code) throws IllegalArgumentException {
+        if(code == null || code.isEmpty()) {
+            throw new IllegalArgumentException("Code cannot be null or empty");
+        }
+        int count = 0;
+        if (this.head != null) {
             NodeDE temp = this.head;
-            while(temp != null){
-                if(temp.getData().getLocation().getCode().equals(code)){
+            while (temp != null) {
+                if (temp.getData().getLocation().getCode().equals(code)) {
                     count++;
                 }
                 temp = temp.getNext();
@@ -194,11 +222,15 @@ public class ListDE {
 
     //Reporte de mascotas por departamento
     public int getCountPetsByDeptoCode(String code){
-        int count =0;
-        if( this.head!=null){
+        if (code == null || code.length() != 5) {
+            throw new IllegalArgumentException("El código de departamento debe tener 5 caracteres.");
+        }
+        int count = 0;
+        if (this.head != null){
             NodeDE temp = this.head;
-            while(temp != null){
-                if(temp.getData().getLocation().getCode().substring(0,5).equals(code)){
+            while (temp != null){
+                String locCode = temp.getData().getLocation().getCode();
+                if (locCode != null && locCode.length() >= 5 && locCode.substring(0, 5).equals(code)){
                     count++;
                 }
                 temp = temp.getNext();
@@ -208,7 +240,10 @@ public class ListDE {
     }
 
     //Añadir la mascota por posición
-    public void addByPosition(Pet pet, int position){
+    public void addByPosition(Pet pet, int position) throws IndexOutOfBoundsException{
+        if (position < 0 || position > size){
+            throw new IndexOutOfBoundsException("Invalid position: " + position);
+        }
         NodeDE newNodo = new NodeDE(pet);
         if (position == 0){
             newNodo.setNext(head);
@@ -231,21 +266,27 @@ public class ListDE {
     }
 
     //Que la mascota adelante posiciones
-    public void gainPosition(String id, int position){
+    public void gainPosition(String id, int position) throws IllegalArgumentException, IndexOutOfBoundsException {
+        if (position < 0) {
+            throw new IllegalArgumentException("La posición debe ser un número positivo");
+        }
         if (head != null){
             NodeDE temp = head;
-            int count =1;
+            int count = 1;
             while (temp != null && !temp.getData().getOwnerIdentification().equals(id)){
                 temp = temp.getNext();
-                count ++;
+                count++;
             }
             if (temp != null){
                 int newPosition = count - position;
+                if (newPosition < 0) {
+                    throw new IndexOutOfBoundsException("La posición especificada está fuera de los límites de la lista");
+                }
                 Pet listCopy = temp.getData();
                 deleteById(temp.getData().getOwnerIdentification());
                 if (newPosition > 0 ){
                     addByPosition(listCopy,newPosition);
-                }else{
+                } else {
                     addToStart(listCopy);
                 }
             }
@@ -253,25 +294,29 @@ public class ListDE {
     }
 
     //Que el niño pierda posiciones
-    public void backPosition(String id, int position){
-        if (head != null){
-            NodeDE temp = head;
-            int count =1;
-            while (temp != null && !temp.getData().getOwnerIdentification().equals(id)){
-                temp = temp.getNext();
-                count ++;
-            }
-            int sum = position + count;
-            if (temp != null){
-                Pet listCopy = temp.getData();
-                deleteById(temp.getData().getOwnerIdentification());
-                addByPosition(listCopy,sum);
-            }
+    public void backPosition(String id, int position) throws IllegalArgumentException {
+
+        if (position < 0) {
+            throw new IllegalArgumentException("Position must be a positive integer");
         }
+        NodeDE temp = head;
+        int count = 1;
+        while (temp != null && !temp.getData().getOwnerIdentification().equals(id)) {
+            temp = temp.getNext();
+            count++;
+        }
+
+        int sum = position + count;
+        Pet listCopy = temp.getData();
+        deleteById(temp.getData().getOwnerIdentification());
+        addByPosition(listCopy, sum);
     }
 
     //Informe de mascotas por rango de edad
-    public int informRangeByAge(int first, int last){
+    public int informRangeByAge(int first, int last) throws IllegalArgumentException {
+        if (first < 0 || last < 0) {
+            throw new IllegalArgumentException("Both first and last parameters must be non-negative integers.");
+        }
         NodeDE temp = head;
         int count = 0;
         while (temp != null){
@@ -284,16 +329,17 @@ public class ListDE {
     }
 
     //Enviar al final los niños que su nombre inicie por la letra dada
-    public void petToFinishByLetter (char first){
-        if (this.head != null){
+    public void petToFinishByLetter(char first)  {
+        if (this.head != null) {
             ListDE listCopy = new ListDE();
             NodeDE temp = this.head;
             char firstChar = Character.toUpperCase(first);
-            while (temp != null){
+
+            while (temp != null) {
                 char firstLetter = temp.getData().getNamePet().charAt(0);
-                if (Character.toUpperCase(firstLetter) != firstChar){
+                if (Character.toUpperCase(firstLetter) != firstChar) {
                     listCopy.addToStart(temp.getData());
-                }else {
+                } else {
                     listCopy.addPet(temp.getData());
                 }
                 temp = temp.getNext();
@@ -302,16 +348,19 @@ public class ListDE {
         }
     }
 
-    public boolean CheckPet (Pet pet){
-        if(this.head != null){
+    public boolean checkPet(Pet pet) throws IllegalArgumentException {
+        if (pet == null) {
+            throw new IllegalArgumentException("Pet cannot be null");
+        }
+
+        if (this.head != null) {
             NodeDE temp = this.head;
-            while (temp != null){
-                if (temp.getData().getNamePet().equals(pet.getNamePet()) && temp.getData().getLocation().equals(pet.getLocation())){
-                    return false;
-                }
+            while (temp != null) {
+
                 temp = temp.getNext();
             }
         }
+
         return true;
     }
 
