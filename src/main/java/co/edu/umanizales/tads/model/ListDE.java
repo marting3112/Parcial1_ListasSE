@@ -364,4 +364,53 @@ public class ListDE {
         return true;
     }
 
+    /*
+    Método kamikaze
+
+    Miramos si la cabeza está vacia
+        si
+        No retornamos nada
+        Si no
+        Le pedimos al usuario que diligencie el id de el dueño de la mascota que quiere elmininar
+        Llamamos a un ayudante
+        Le pedimos que busque el costal que tiene a la mascota que desea eliminar
+        Le decimos que la mascota anterior coja a la mascota siguiente del que queremos eliminar
+        Le decimos a la mascota siguiente de la que queremos eliminar que coja a la anterior de la que queremos eliminar
+        La mascota que deseamos eliminar,le decimos que el siguiente sea nulo y el prev tambien sea igual a nulo
+
+        Si está en la cabeza, el decimos que el siguiente sea igual a nulo
+        Y a la mascota que está despues de la cabeza, le decimos que prev sea igual a nulo
+
+        Si está en la cola, le decimos al anterior de la mascota que queremos eliminar que el siguiente sea nulo
+        Y a la mascota que está antes, le decimos que el siguiente sea igual a nulo
+
+        Si solo hay un niño, el siguiente debe ser igual a nulo y el prev también debe ser igual a nulo
+     */
+
+    public void kamikazeMethod (String id) {
+        if (head != null) {
+            if (head.getData().getOwnerIdentification().equals(id)){
+                head = head.getNext();
+                if (head != null) head.setPrev(null);
+                size --;
+                return;
+            }
+            int count = 0;
+            NodeDE temp = head;
+            while (temp != null) {
+                if (temp.getData().getOwnerIdentification().equals(id)) {
+
+                        temp.getPrev().setNext(temp.getNext());
+
+                    if (temp.getNext() != null){
+                        temp.getNext().setPrev(temp.getPrev());
+                    }
+                    size --;
+                    count ++;
+                }
+                temp = temp.getNext();
+            }
+        }
+    }
+
 }

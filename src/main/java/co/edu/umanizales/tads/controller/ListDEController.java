@@ -249,4 +249,12 @@ public class ListDEController {
         }
     }
 
+    @GetMapping(path = "/kamikazemethod/{ownerid}")
+    public ResponseEntity<ResponseDTO> kamikazeMethod(@PathVariable String ownerid )  {
+
+        listDEService.getPets().kamikazeMethod(ownerid);
+        return new ResponseEntity<>(new ResponseDTO(200,
+                "Mascota por el id dado eliminado", null), HttpStatus.OK);
+    }
+
 }
