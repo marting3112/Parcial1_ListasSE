@@ -17,8 +17,6 @@ public class ListDE {
         if (pet == null) {
             throw new IllegalArgumentException("El objeto pet no puede ser nulo");
         }
-        int size = 0;
-
         if (head == null) {
             head = new NodeDE(pet);
         } else {
@@ -375,6 +373,7 @@ public class ListDE {
         Llamamos a un ayudante
         Le pedimos que busque el costal que tiene a la mascota que desea eliminar
         Le decimos que la mascota anterior coja a la mascota siguiente del que queremos eliminar
+        Validamos si el siguiente tiene algo
         Le decimos a la mascota siguiente de la que queremos eliminar que coja a la anterior de la que queremos eliminar
         La mascota que deseamos eliminar,le decimos que el siguiente sea nulo y el prev tambien sea igual a nulo
 

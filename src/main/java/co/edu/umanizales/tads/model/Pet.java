@@ -13,5 +13,17 @@ public class Pet {
     private String breed;
     private Location location;
     private char gender;
+    private boolean dirty;
 
+    public Pet(String ownerIdentification, String namePet, byte agePet, String petType,
+               String breed, Location location, char gender){
+        this.ownerIdentification = ownerIdentification;
+        this.namePet = namePet;
+        this.agePet = agePet;
+        this.petType = petType;
+        this.breed = breed;
+        this.location = location;
+        this.gender = gender;
+        dirty = true;
+    }
 }

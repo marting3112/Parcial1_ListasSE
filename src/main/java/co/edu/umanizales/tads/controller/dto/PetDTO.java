@@ -25,6 +25,4 @@ public class PetDTO {
     private String codeLocation;
     private char gender;
 
-
-
 }
