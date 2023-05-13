@@ -50,4 +50,42 @@ public class ListCircController {
             return new ResponseEntity<>(new ResponseDTO(400, e.getMessage(), null), HttpStatus.OK);
         }
     }
+
+    @PostMapping(path = "/addtostart")
+    public ResponseEntity<ResponseDTO> addToStar(@RequestBody PetDTO petDTO) {
+        Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
+        listCircService.getPetCirc().addToStart(
+                new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
+                        petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
+                        location, petDTO.getGender()));
+
+        return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al inicio", null),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addtoend")
+    public ResponseEntity<ResponseDTO> addToEnd(@RequestBody PetDTO petDTO) {
+        Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
+        listCircService.getPetCirc().addToEnd(
+                new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
+                        petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
+                        location, petDTO.getGender()));
+
+        return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al final", null),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/addbyposition/{position}")
+    public ResponseEntity<ResponseDTO> addByPosition(@RequestBody PetDTO petDTO, @PathVariable int position) {
+        Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
+        listCircService.getPetCirc().addByPosition(
+                new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
+                        petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
+                        location, petDTO.getGender()),position);
+
+        return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada en la posicion: "
+                + position, null),
+                HttpStatus.OK);
+    }
+
 }

@@ -52,7 +52,53 @@ public class ListCirc {
         return petList;
     }
 
+    public void addToStart(Pet pet) {
+        if (head == null) {
+            addPet(pet);
+        }else{
+            NodeDE newNode = new NodeDE(pet);
+            NodeDE temp = head.getPrev();
+            temp.setNext(newNode);
+            newNode.setPrev(temp);
+            newNode.setNext(head);
+            head.setPrev(newNode);
+            head=newNode;
+            size++;
+        }
+    }
 
+    public void addToEnd(Pet pet) {
+        if (head == null) {
+            addPet(pet);
+        } else {
+            NodeDE newNode = new NodeDE(pet);
+            NodeDE lastNode = head.getPrev();
+            lastNode.setNext(newNode);
+            newNode.setPrev(lastNode);
+            newNode.setNext(head);
+            head.setPrev(newNode);
+            size++;
+        }
+    }
 
+    public void addByPosition(Pet pet, int position) {
+        if (position == 1) {
+            addToStart(pet);
+        } else {
+            NodeDE temp = head;
+            int count = 1;
+
+            while (count < position -1) {
+                temp = temp.getNext();
+                count++;
+            }
+            NodeDE newNode = new NodeDE(pet);
+            newNode.setNext(temp.getNext());
+            newNode.setPrev(temp);
+            temp.getNext().setPrev(newNode);
+            temp.setNext(newNode);
+            size++;
+        }
+    }
 
 }
