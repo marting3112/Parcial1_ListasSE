@@ -88,4 +88,32 @@ public class ListCircController {
                 HttpStatus.OK);
     }
 
+    @GetMapping(path = "/takeshower/{letter}")
+    public ResponseEntity<ResponseDTO> takeShower(@PathVariable char letter) {
+        int num;
+        char letterLower = Character.toLowerCase(letter);
+
+        num = listCircService.getPetCirc().takeShower(letter);
+
+        if (num == 0) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    409, "ERROR: No hay perros para bañar o letra incorrecta", null), HttpStatus.OK);
+        }
+
+        if (num == 1) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    200, "Se bañó la primera mascota de la lista", null), HttpStatus.OK);
+        } else {
+            if (letterLower == 'd') {
+                return new ResponseEntity<>(new ResponseDTO(
+                        200, "Se bañó la mascota número " + num + " dirigiendose a la derecha", null), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseDTO(
+                        200, "Se bañó la mascota número " + num + " dirigiendose a la izquierda", null), HttpStatus.OK);
+            }
+        }
+    }
+
+
+
 }

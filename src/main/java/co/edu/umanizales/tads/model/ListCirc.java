@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 @Data
 
 public class ListCirc {
@@ -99,6 +101,54 @@ public class ListCirc {
             temp.setNext(newNode);
             size++;
         }
+    }
+
+    public int takeShower(char letter) {
+        char start = Character.toLowerCase(letter);
+        NodeDE temp = head;
+
+        if (temp == null) {
+            // No hay perros para bañar
+            return 0;
+        }
+
+        if (start != 'd' && start != 'i') {
+            // Debe ingresar 'd' (derecha) o 'i' (izquierda)
+            return 0;
+        }
+
+        Random rand = new Random();
+        int num = rand.nextInt(size) + 1;
+        if (num == 1) {
+            if (temp.getData().isDirty()) {
+                temp.getData().setDirty(false);
+            } else {
+                // La mascota ya está bañada
+                return 0;
+            }
+        } else {
+            int count = 1;
+            if (start == 'd') {
+                while (count != num) {
+                    temp = temp.getNext();
+                    count++;
+                }
+            } else {
+                while (count != num) {
+                    temp = temp.getPrev();
+                    count++;
+                }
+            }
+
+            if (temp.getData().isDirty()) {
+                temp.getData().setDirty(false);
+            } else {
+                // La mascota ya está bañada
+                return 0;
+            }
+        }
+
+        return num;
     }
 
 }
