@@ -12,6 +12,8 @@ import java.util.Random;
 public class ListCirc {
     private NodeDE head;
     private int size;
+    private List<Pet> pets = new ArrayList<>();
+
 
     /*
     Verificar si la mascota es nula:
@@ -57,23 +59,18 @@ public class ListCirc {
         size++;
     }
 
-    public Pet[] print() throws ListDEExcepcion {
-        Pet[] petList = new Pet[size];
-
-        int num = 0;
-        NodeDE temp = head;
-
-        if (temp == null) {
-            throw new ListDEExcepcion("ERROR: La lista está vacía");
+    public List <Pet> print(){
+        pets.clear();
+        int count = 1;
+        if (head != null){
+            NodeDE temp = head;
+            while (count != size){
+                pets.add(temp.getData());
+                temp = temp.getNext();
+                count ++;
+            }
         }
-
-        do {
-            petList[num] = temp.getData();
-            temp = temp.getNext();
-            num++;
-        } while (temp != head );
-
-        return petList;
+        return pets;
     }
 
     /*
