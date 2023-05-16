@@ -1,6 +1,5 @@
 package co.edu.umanizales.tads.model;
 
-import co.edu.umanizales.tads.exception.ListDEExcepcion;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -61,15 +60,15 @@ public class ListCirc {
 
     public List <Pet> print(){
         pets.clear();
-        int count = 1;
-        if (head != null){
-            NodeDE temp = head;
-            while (count != size){
-                pets.add(temp.getData());
-                temp = temp.getNext();
-                count ++;
-            }
-        }
+
+        NodeDE temp = head;
+        do {
+
+            pets.add(temp.getData());
+            temp = temp.getNext();
+
+
+        } while (temp != head);
         return pets;
     }
 
@@ -286,5 +285,57 @@ Retornar el número del perro que fue bañado.
 
         return num;
     }
+/*
+Igualo temp a la cabeza
+ Creo una variable de tipo Pet para guardar la mascota con más pulgas y la inicializo como null: maxPetFleas
+ Reviso que la lista no esté vacía
+ En caso de que no esté vacía, entonces igualo la variable maxPetFleas
+ Recorro la lista con un bucle do-while (esto para asegurarme que llegue hasta el último pet) hasta que temp sea igual a cabeza
+ Dentro del bucle, reviso si temp en ese momento es igual a la raza
+ Si es igual a la raza, igualo la variable maxPetFleas con esa mascota y luego rompo el bucle
+ Luego reviso que maxPetFleas no sea null, eso significa que se encontró una mascota con esa raza
+ En caso de que no sea nulo, vuelvo a recorrer la lista hasta revisar si temp en ese momento tiene más pulgas que maxPetFleas
+ y que tenga la misma raza. Si se cumple la condición, entonces temp será la nueva maxPetFleas. Repito este proceso hasta terminar el bucle
+ Al final del bucle, tomo la variable maxPetFleas y la marco como "ensuciada" (dirty)
+ Finalmente, devuelvo la variable maxPetFleas
+*/
+
+
+    public Pet getPetFleasByBreed(String breed )  {
+        NodeDE temp = head;
+        Pet maxPetFleas = null;
+        if (head != null) {
+
+            do {
+
+                if ( temp.getData().getBreed().equalsIgnoreCase(breed)) {
+                    maxPetFleas = temp.getData();
+                    break;
+                }
+
+                temp = temp.getNext();
+
+            } while (temp!= head);
+
+
+            if (maxPetFleas != null){
+
+            do {
+
+                if (temp.getData().getFleas() > maxPetFleas.getFleas() && temp.getData().getBreed().equalsIgnoreCase(breed.toLowerCase())) {
+                    maxPetFleas = temp.getData();
+                }
+
+                temp = temp.getNext();
+
+            } while (temp != head);
+                maxPetFleas.setDirty(true);
+            }
+
+        }
+        return maxPetFleas;
+    }
+
+
 
 }

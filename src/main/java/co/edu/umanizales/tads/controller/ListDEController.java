@@ -1,14 +1,15 @@
 package co.edu.umanizales.tads.controller;
 
-import co.edu.umanizales.tads.controller.dto.*;
+import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads.controller.dto.PetDTO;
+import co.edu.umanizales.tads.controller.dto.RangeDTO;
+import co.edu.umanizales.tads.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads.exception.LocationNotFoundException;
 import co.edu.umanizales.tads.exception.PetAlreadyAddedException;
-import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.model.Pet;
 import co.edu.umanizales.tads.model.Ranges;
 import co.edu.umanizales.tads.service.ListDEService;
-import co.edu.umanizales.tads.service.ListSEService;
 import co.edu.umanizales.tads.service.LocationService;
 import co.edu.umanizales.tads.service.RangeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class ListDEController {
             }
             Pet newPet = new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
                     petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
-                    location, petDTO.getGender());
+                    location, petDTO.getGender(), petDTO.getFleas());
 
             listDEService.getPets().addPet(newPet);
             return new ResponseEntity<>(new ResponseDTO(

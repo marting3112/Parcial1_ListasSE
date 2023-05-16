@@ -14,9 +14,10 @@ public class Pet {
     private Location location;
     private char gender;
     private boolean dirty;
+    private int fleas;
 
     public Pet(String ownerIdentification, String namePet, byte agePet, String petType,
-               String breed, Location location, char gender){
+               String breed, Location location, char gender,int fleas){
         this.ownerIdentification = ownerIdentification;
         this.namePet = namePet;
         this.agePet = agePet;
@@ -25,5 +26,6 @@ public class Pet {
         this.location = location;
         this.gender = gender;
         dirty = true;
+        this.fleas = fleas;
     }
 }

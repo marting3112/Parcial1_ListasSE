@@ -2,7 +2,6 @@ package co.edu.umanizales.tads.controller;
 
 import co.edu.umanizales.tads.controller.dto.PetDTO;
 import co.edu.umanizales.tads.controller.dto.ResponseDTO;
-import co.edu.umanizales.tads.exception.ListCircException;
 import co.edu.umanizales.tads.exception.ListDEExcepcion;
 import co.edu.umanizales.tads.exception.LocationNotFoundException;
 import co.edu.umanizales.tads.exception.PetAlreadyAddedException;
@@ -39,8 +38,7 @@ public class ListCircController {
             }
             Pet newPet = new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
                     petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
-                    location, petDTO.getGender());
-
+                    location, petDTO.getGender(), petDTO.getFleas());
             listCircService.getPetCirc().addPet(newPet);
             return new ResponseEntity<>(new ResponseDTO(
                     200, "Se ha adicionado a la mascota con éxito", null), HttpStatus.OK);
@@ -57,7 +55,7 @@ public class ListCircController {
         listCircService.getPetCirc().addToStart(
                 new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
                         petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
-                        location, petDTO.getGender()));
+                        location, petDTO.getGender(), petDTO.getFleas()));
 
         return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al inicio", null),
                 HttpStatus.OK);
@@ -69,7 +67,7 @@ public class ListCircController {
         listCircService.getPetCirc().addToEnd(
                 new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
                         petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
-                        location, petDTO.getGender()));
+                        location, petDTO.getGender(), petDTO.getFleas()));
 
         return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al final", null),
                 HttpStatus.OK);
@@ -81,12 +79,16 @@ public class ListCircController {
         listCircService.getPetCirc().addByPosition(
                 new Pet(petDTO.getOwnerIdentification(), petDTO.getNamePet(),
                         petDTO.getAgePet(), petDTO.getPetType(), petDTO.getBreed(),
-                        location, petDTO.getGender()),position);
+                        location, petDTO.getGender(), petDTO.getFleas()),position);
 
         return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada en la posicion: "
                 + position, null),
                 HttpStatus.OK);
     }
+
+
+
+
 
     @GetMapping(path = "/takeshower/{letter}")
     public ResponseEntity<ResponseDTO> takeShower(@PathVariable char letter) {
@@ -114,6 +116,22 @@ public class ListCircController {
         }
     }
 
+    @GetMapping(path = "/getpetfleas/{breed}")
+    public ResponseEntity<ResponseDTO> getPetFleasByBreed(@PathVariable String breed){
 
+            Pet pet= listCircService.getPetCirc().getPetFleasByBreed(breed);
+            if (pet==null){
+                return new ResponseEntity<>(new ResponseDTO(
+                        200,"la lista esta vaciá o la raza no existe " ,
+                        null), HttpStatus.OK);
 
+            }
+            else {
+
+                return new ResponseEntity<>(new ResponseDTO(
+                        200, "La mascota de raza: " + breed + " con mas pulgas fue la mascota de Nombre: " +
+                        pet.getNamePet()+" con "+ pet.getFleas() +" pulgas y estado sucio: " + pet.isDirty(),
+                        null), HttpStatus.OK);
+            }
+    }
 }
